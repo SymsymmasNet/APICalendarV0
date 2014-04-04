@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Windows.Storage;
+using Microsoft.Phone.Tasks;
+
 
 namespace Day9_CalendarAPI
 {
@@ -31,11 +33,30 @@ namespace Day9_CalendarAPI
 		{
 			SearchCalendar();
 		}
+        
 
+         protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
+        {
+
+            base.OnNavigatedFrom(e);
+
+        }
+         public void Refresh()
+         {
+
+         }
+
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            
+            base.OnNavigatedTo(e);
+
+        }
+
+        
 		void appointments_SearchCompleted(object sender, AppointmentsSearchEventArgs e)
 		{
            
-
 
 			    if (e.Results.Count() == 0)
 			    {
@@ -47,8 +68,39 @@ namespace Day9_CalendarAPI
 				    DateList.ItemsSource = e.Results;
 			    }
 
-
 		}
 
-	}
+        private void New(object sender, EventArgs e)
+        {
+           
+            SaveAppointmentTask saveAppointmentTask = new SaveAppointmentTask();
+            saveAppointmentTask.AppointmentStatus = Microsoft.Phone.UserData.AppointmentStatus.Busy;
+            saveAppointmentTask.Show();
+        }
+
+        /* Mode */
+        private void Param(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Mode.xaml", UriKind.Relative));
+        }
+
+        
+        /*
+         * 
+         * 
+            SaveAppointmentTask saveAppointmentTask = new SaveAppointmentTask();
+            saveAppointmentTask.StartTime = DateTime.Now.AddHours(2);
+            saveAppointmentTask.EndTime = DateTime.Now.AddHours(3);
+            saveAppointmentTask.Subject = "Appointment subject";
+            saveAppointmentTask.Location = "Appointment location";
+            saveAppointmentTask.Details = "Appointment details";
+            saveAppointmentTask.IsAllDayEvent = false;
+            saveAppointmentTask.Reminder = Reminder.FifteenMinutes;
+            saveAppointmentTask.AppointmentStatus = Microsoft.Phone.UserData.AppointmentStatus.Busy;
+
+            saveAppointmentTask.Show();
+         * 
+         */
+
+    }
 }
