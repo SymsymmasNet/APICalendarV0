@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using Windows.Storage;
 using Microsoft.Phone.Tasks;
-
+using System.Collections.Generic;
+using Microsoft.Phone.Shell;
+using Windows.Phone.Speech.Recognition;   // For vocal recognition.
+using Windows.Phone.Speech.Synthesis;   // For vocal synthesis.
 
 namespace Day9_CalendarAPI
 {
@@ -16,12 +19,18 @@ namespace Day9_CalendarAPI
 		Appointments appointments = new Appointments();
         public App app = (App)Application.Current;
 
+        SpeechRecognizerUI recoWithUI;
+
+       
+
 		public MainPage()
 		{
+            
 			InitializeComponent();
 
 			appointments.SearchCompleted += new EventHandler<AppointmentsSearchEventArgs>(appointments_SearchCompleted);
 			SearchCalendar();
+            
 		}
            
 		private void SearchCalendar()
@@ -53,24 +62,48 @@ namespace Day9_CalendarAPI
 
         }
 
-        
-		void appointments_SearchCompleted(object sender, AppointmentsSearchEventArgs e)
+
+        async void appointments_SearchCompleted(object sender, AppointmentsSearchEventArgs e)
 		{
-           
+            SpeechSynthesizer synth = new SpeechSynthesizer();
+            
 
 			    if (e.Results.Count() == 0)
 			    {
-				    MessageText.Text = "no events for the selected day";
+                    MessageText.Text = "Pas d'événements pour aujourd'hui ";
 			    }
 			    else
 			    {
-				    MessageText.Text = e.Results.Count() + " events found";
+                    MessageText.Text = e.Results.Count() + " événements ";
 				    DateList.ItemsSource = e.Results;
+
+                    //await synth.SpeakTextAsync();
+                    await synth.SpeakTextAsync(MessageText.Text);
+                    
+                    foreach (Appointment ap in e.Results)
+                    {
+                        
+                        if (ap.StartTime.ToString() != null)
+                            await synth.SpeakTextAsync(ap.StartTime.ToString());
+
+                        if (ap.EndTime.ToString() != null)
+                            await synth.SpeakTextAsync(ap.EndTime.ToString());
+
+                        if(ap.Subject != null)
+                        await synth.SpeakTextAsync(ap.Subject);
+
+                        if (ap.Location != null)
+                        await synth.SpeakTextAsync(ap.Location);
+
+                        if (ap.Details != null)
+                            await synth.SpeakTextAsync(ap.Details);
+                       
+                    }
 			    }
 
 		}
 
-        private void New(object sender, EventArgs e)
+        private void AddEvent(object sender, EventArgs e)
         {
            
             SaveAppointmentTask saveAppointmentTask = new SaveAppointmentTask();
@@ -84,7 +117,14 @@ namespace Day9_CalendarAPI
             NavigationService.Navigate(new Uri("/Mode.xaml", UriKind.Relative));
         }
 
-        
+
+        /* Voice Synthesizer Test */
+
+        private void Test_voice(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Voice.xaml", UriKind.Relative));
+        }
+
         /*
          * 
          * 

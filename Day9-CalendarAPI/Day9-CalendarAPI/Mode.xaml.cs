@@ -85,11 +85,12 @@ namespace Day9_CalendarAPI
             }
         }
 
+        /*
         private void Pivot_Loaded(object sender, RoutedEventArgs e)
         {
             Console.Write("Mode ");
         }
-
+        */
        
 
 

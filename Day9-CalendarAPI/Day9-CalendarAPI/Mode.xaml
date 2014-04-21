@@ -32,7 +32,7 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <!-- Parametre -->
             <!-- Privé -->
-            <phone:Pivot Title="Comment lire les événements ?" Loaded="Pivot_Loaded">
+            <phone:Pivot Title="Comment lire les événements ?" >
                 <phone:PivotItem CacheMode="{x:Null}" Header="En privé">
                     <Grid>
                         <TextBlock TextWrapping="Wrap" Text="Quand les écouteurs sont branchés." VerticalAlignment="Top" FontWeight="Bold" FontFamily="Calibri" FontSize="23"/>

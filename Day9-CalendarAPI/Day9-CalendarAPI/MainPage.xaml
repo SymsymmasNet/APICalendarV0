@@ -12,18 +12,19 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True" Background="Black">
     <!-- Menu -->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="Nouveau Evenement" Click="New"/>
+                <shell:ApplicationBarMenuItem Text="Nouveau Evenement" Click="AddEvent"/>
                 <shell:ApplicationBarMenuItem Text="Mode" Click="Param"/>
+                <shell:ApplicationBarMenuItem Text="Voice Synthesizer Test" Click="Test_voice"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
-    <Grid x:Name="LayoutRoot" Background="#FF000076">
+    <Grid x:Name="LayoutRoot" Background="#FF0C0C0F">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -40,14 +41,14 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <toolkit:DatePicker x:Name="DateBox" Height="100" Margin="0,63,0,372" ValueChanged="DateBox_ValueChanged" />
             <TextBlock Height="30" HorizontalAlignment="Left" Margin="12,6,0,0" Name="textBlock1" Text="Date : " VerticalAlignment="Top" Width="126" />
-            <ListBox x:Name="DateList" Margin="0,143,0,0">
+            <ListBox x:Name="DateList" Margin="0,143,0,0" ItemsSource="{Binding}" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
-                            <TextBlock Text="{Binding StartTime}" FontSize="16" />
-                            <TextBlock Text="{Binding EndTime}" FontSize="16" />
-                            <TextBlock Text="{Binding Subject}" TextWrapping="NoWrap" FontWeight="Bold" FontSize="24" />
-                            <TextBlock Text="{Binding Location}" TextWrapping="NoWrap" Margin="0,0,0,15" FontSize="20" />
+                            <TextBlock x:Name="debut" Text="{Binding StartTime}" FontSize="16" />
+                            <TextBlock x:Name="fin"  Text="{Binding EndTime}" FontSize="16" />
+                            <TextBlock x:Name="sujet" Text="{Binding Subject}" TextWrapping="NoWrap" FontWeight="Bold" FontSize="24" />
+                            <TextBlock x:Name="lieu" Text="{Binding Location}" TextWrapping="NoWrap" Margin="0,0,0,15" FontSize="20" />
                             
                         </StackPanel>
                     </DataTemplate>
